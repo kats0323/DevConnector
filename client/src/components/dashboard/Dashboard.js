@@ -3,9 +3,14 @@ import { Link } from 'react-router-dom'
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Spinner from '../layout/Spinner';
-import { getCurrentProfile } from '../../actions/profile';
+import DashboardActions from './DashboardActions';
+import { getCurrentProfile, deleteAccount } from '../../actions/profile';
+import Experience from './Experience';
+import Education from './Education';
 
-const Dashboad = ({ getCurrentProfile,
+const Dashboad = ({
+    getCurrentProfile,
+    deleteAccount,
     auth: { user },
     profile: { profile, loading } }) => {
     useEffect(() => {
@@ -19,7 +24,16 @@ const Dashboad = ({ getCurrentProfile,
                 <i className="fas fa-user"></i>
                 Welcome {user && user.name}</p>
             {profile !== null ? (
-                <Fragment>has</Fragment>
+                <Fragment>
+                    <DashboardActions />
+                    <Experience experience={profile.experience} />
+                    <Education education={profile.education} />
+                    <div className="my-2">
+                        <button className="btn btn-danger" onClick={() => deleteAccount()}>
+                            <i className="fas fa-user-minus"> Delete My Account </i>
+                        </button>
+                    </div>
+                </Fragment>
             ) : (
                     <Fragment>
                         <p>You have not yet to setup a profile, please add some info</p>
@@ -34,7 +48,8 @@ const Dashboad = ({ getCurrentProfile,
 Dashboad.propTypes = {
     getCurrentProfile: PropTypes.func.isRequired,
     auth: PropTypes.object.isRequired,
-    profile: PropTypes.object.isRequired
+    profile: PropTypes.object.isRequired,
+    deleteAccount: PropTypes.object.isRequired
 }
 
 const mapStateToProps = state => ({
@@ -43,4 +58,4 @@ const mapStateToProps = state => ({
 })
 
 
-export default connect(mapStateToProps, { getCurrentProfile })(Dashboad)
+export default connect(mapStateToProps, { getCurrentProfile, deleteAccount })(Dashboad)
