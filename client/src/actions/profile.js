@@ -6,7 +6,9 @@ import {
     PROFILE_ERROR,
     UPDATE_PROFILE,
     ACCOUNT_DELETE,
-    CLEAR_PROFILE
+    CLEAR_PROFILE,
+    GET_PROFILES,
+    GET_REPOS
 } from '../actions/types';
 
 // Get current user profile
@@ -16,6 +18,62 @@ export const getCurrentProfile = () => async dispatch => {
 
         dispatch({
             type: GET_PROFILE,
+            payload: res.data
+        })
+    } catch (err) {
+        dispatch({
+            type: PROFILE_ERROR,
+            payload: { msg: err.response.statusText, status: err.response.status }
+        })
+    }
+}
+
+// Get all profiles
+export const getProfiles = () => async dispatch => {
+
+    dispatch({ type: CLEAR_PROFILE })
+    try {
+        const res = await axios.get('/api/profile');
+
+        dispatch({
+            type: GET_PROFILES,
+            payload: res.data
+        })
+    } catch (err) {
+        dispatch({
+            type: PROFILE_ERROR,
+            payload: { msg: err.response.statusText, status: err.response.status }
+        })
+    }
+}
+
+
+// Get  profile by id
+export const getProfileById = userId => async dispatch => {
+
+    try {
+        const res = await axios.get(`/api/profile/user/${userId}`);
+
+        dispatch({
+            type: GET_PROFILE,
+            payload: res.data
+        })
+    } catch (err) {
+        dispatch({
+            type: PROFILE_ERROR,
+            payload: { msg: err.response.statusText, status: err.response.status }
+        })
+    }
+};
+
+// Get Github repos
+export const getGithubRepos = username => async dispatch => {
+
+    try {
+        const res = await axios.get(`/api/profile/github/${username}`);
+
+        dispatch({
+            type: GET_REPOS,
             payload: res.data
         })
     } catch (err) {
@@ -174,7 +232,7 @@ export const deleteAccount = id => async dispatch => {
 
     if (window.confirm('Are you sure? This can NOT be undone!')) {
         try {
-            const res = await axios.delete('/api/profile');
+            await axios.delete('/api/profile');
             dispatch({ type: CLEAR_PROFILE });
             dispatch({ type: ACCOUNT_DELETE });
             dispatch(setAlert('Your Account has benn permanantly delteted'))
