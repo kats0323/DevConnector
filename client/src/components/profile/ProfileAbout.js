@@ -1,5 +1,4 @@
-import React, { Fragment } from 'react'
-import PropTypes from 'prop-types'
+import React, { Fragment } from 'react';
 
 const ProfileAbout = ({ profile: {
     bio,
@@ -31,8 +30,5 @@ const ProfileAbout = ({ profile: {
     )
 }
 
-ProfileAbout.propTypes = {
-
-}
 
 export default ProfileAbout

@@ -7,7 +7,7 @@ import { createProfile, getCurrentProfile } from '../../actions/profile';
 const EditProfile = ({ profile: { profile, loading }, createProfile, getCurrentProfile, history }) => {
 
     const [formData, setFormData] = useState({
-        company: '',
+
         website: '',
         location: '',
         status: '',
