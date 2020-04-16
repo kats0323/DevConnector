@@ -15,7 +15,7 @@ const Dashboad = ({
     profile: { profile, loading } }) => {
     useEffect(() => {
         getCurrentProfile();
-    }, []);
+    }, [getCurrentProfile]);
 
     return loading && profile === null ? <Spinner /> :
         <Fragment>
